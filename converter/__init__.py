@@ -183,10 +183,10 @@ class Converter(object):
 
         info = self.ffmpeg.probe(infile)
         if info is None:
-            raise ConverterError("Can't get information about source file")
+            raise ConverterError("Can't get information about source file:" + infile)
 
         if not info.video and not info.audio:
-            raise ConverterError('Source file has no audio or video streams')
+            raise ConverterError('Source file has no audio or video streams:' + infile)
 
         if info.video and 'video' in options:
             options = options.copy()
@@ -195,7 +195,7 @@ class Converter(object):
             v['src_height'] = info.video.video_height
 
         if info.format.duration < 0.01:
-            raise ConverterError('Zero-length media')
+            raise ConverterError('Zero-length media :' + infile)
 
         if twopass:
             optlist1 = self.parse_options(options, 1)
